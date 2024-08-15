@@ -182,3 +182,7 @@ fn get_frontmost_app_pid() -> i32 {
 pub fn check_menubar_frontmost() -> bool {
     get_frontmost_app_pid() == app_pid()
 }
+
+pub fn emit_panel_open(app: &AppHandle) {
+  app.emit("panel-shown", true).unwrap();
+}
