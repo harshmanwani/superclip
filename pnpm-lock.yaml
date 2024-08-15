@@ -9,8 +9,11 @@ importers:
   .:
     dependencies:
       '@tauri-apps/api':
-        specifier: 2.0.0-rc.3
-        version: 2.0.0-rc.3
+        specifier: 2.0.0-rc.0
+        version: 2.0.0-rc.0
+      '@tauri-apps/plugin-clipboard-manager':
+        specifier: 2.0.0-rc.0
+        version: 2.0.0-rc.0
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -449,6 +452,9 @@ packages:
     resolution: {integrity: sha512-FdNcr75EIPfA69gWxpk3xv78og8CVbEa8ih2Rvp9k1tyAyryOth0Ps+jNEqP/WtfFwITWTYm4JqOubSCHoFjpQ==}
     engines: {node: '>= 10'}
     hasBin: true
+
+  '@tauri-apps/plugin-clipboard-manager@2.0.0-rc.0':
+    resolution: {integrity: sha512-2fS3wbRQEtorkk3Np2msJUeKCXRqLQ9sSo2FzlFdUPYNzThsu43uWCF55McGLAfltNOvXQIcQLUBf05jbBL/5w==}
 
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -1000,6 +1006,10 @@ snapshots:
       '@tauri-apps/cli-win32-arm64-msvc': 2.0.0-rc.7
       '@tauri-apps/cli-win32-ia32-msvc': 2.0.0-rc.7
       '@tauri-apps/cli-win32-x64-msvc': 2.0.0-rc.7
+
+  '@tauri-apps/plugin-clipboard-manager@2.0.0-rc.0':
+    dependencies:
+      '@tauri-apps/api': 2.0.0-rc.0
 
   '@types/babel__core@7.20.5':
     dependencies:
