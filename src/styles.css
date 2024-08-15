@@ -4,14 +4,21 @@
   line-height: 24px;
   font-weight: 400;
 
-  color: #fff;
-  background-color: #111;
-
+  color: #111;
+  background-color: #fff;
+  
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    background-color: #111;
+    color: white;
+  }
 }
 
 html,
