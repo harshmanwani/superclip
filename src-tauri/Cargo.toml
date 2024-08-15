@@ -23,6 +23,7 @@ tauri-nspanel = { git = "https://github.com/ahkohd/tauri-nspanel", branch = "v2"
 monitor = { git = "https://github.com/ahkohd/tauri-toolkit", branch = "v2" }
 
 tauri-plugin-shell = "2.0.0-beta.7"
+tauri-plugin-clipboard-manager = "2.1.0-beta.7"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem
