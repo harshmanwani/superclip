@@ -3,6 +3,7 @@ import { invoke } from "@tauri-apps/api/core";
 // import { emit, listen } from '@tauri-apps/api/event'
 import { writeText, readText } from '@tauri-apps/plugin-clipboard-manager';
 import { listen } from '@tauri-apps/api/event';
+import ClipboardViewer from './ClipboardViewer';
 
 import "./App.css";
 
@@ -69,6 +70,7 @@ function App() {
       <button onClick={clearClipboard}>Clear Clipboard</button>
       <button onClick={readClipboard}>Read Clipboard</button>
       <p>{content}</p>
+      <ClipboardViewer />
     </div>
   );
 }
