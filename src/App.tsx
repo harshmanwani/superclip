@@ -59,17 +59,16 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Menubar App</h1>
-      <p>Your content goes here...</p>
-      <p>Niceeee</p>
       <p>{error}</p>
+      {/* <p>Niceeee</p>
+      // <p>{error}</p>
       <div>
         <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
         <button onClick={() => writeClipboard(input)}>Write Clipboard</button>
       </div>
       <button onClick={clearClipboard}>Clear Clipboard</button>
       <button onClick={readClipboard}>Read Clipboard</button>
-      <p>{content}</p>
+      <p>{content}</p> */}
       <ClipboardViewer />
     </div>
   );
