@@ -29,6 +29,7 @@ turso = "0.1.0"
 rusqlite = { version = "0.28.0", features = ["bundled"] }
 libsqlite3-sys = { version = "0.25.2", features = ["bundled"] }
 futures = "0.3"
+chrono = "0.4"
 
 tauri-nspanel = { git = "https://github.com/ahkohd/tauri-nspanel", branch = "v2" }
 monitor = { git = "https://github.com/ahkohd/tauri-toolkit", branch = "v2" }
