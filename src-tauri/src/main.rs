@@ -4,23 +4,41 @@
 mod command;
 mod fns;
 mod tray;
+// mod platform;
+mod backend {
+    pub mod clipboard_monitor;
+    pub mod database;
+    pub mod commands;
+}
+
+use backend::{clipboard_monitor::run_clipboard_monitor, database::initialize_database};
+use futures::executor::block_on; // Added this line to import the futures crate
 
 use tauri::Manager;
+// use crate::database::TursoClient;
 
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_clipboard_manager::init())
         .invoke_handler(tauri::generate_handler![
             command::init,
-            command::show_menubar_panel
+            command::show_menubar_panel,
+            backend::commands::fetch_clipboard_history
         ])
         .plugin(tauri_nspanel::init())
         .setup(|app| {
             app.set_activation_policy(tauri::ActivationPolicy::Accessory);
-
+            
+            let client = initialize_database().expect("Failed to initialize database");
             let app_handle = app.app_handle();
 
             tray::create(app_handle)?;
+
+            // Start the clipboard monitor
+            let app_handle_clone = app_handle.clone();
+            std::thread::spawn(move || {
+                block_on(run_clipboard_monitor(client, &app_handle_clone));
+            });
 
             Ok(())
         })
