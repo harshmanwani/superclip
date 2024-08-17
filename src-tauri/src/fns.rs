@@ -186,3 +186,7 @@ pub fn check_menubar_frontmost() -> bool {
 pub fn emit_panel_open(app: &AppHandle) {
   app.emit("panel-shown", true).unwrap();
 }
+
+pub fn emit_clipboard_updated(app: &AppHandle) {
+    app.emit("clipboard-updated", ()).unwrap();
+}
