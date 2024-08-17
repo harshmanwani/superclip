@@ -1,0 +1,43 @@
+.text-card {
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.text-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.text-card p {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text-content {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #333;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  padding-right: 0;
+  text-align: left;
+}
+
+.text-timestamp {
+  position: static;
+  display: block;
+  text-align: right;
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: #666;
+  font-weight: 500;
+}

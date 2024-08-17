@@ -1,0 +1,15 @@
+.clipboard-viewer {
+  padding: 10px;
+}
+
+.clipboard-viewer h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.clipboard-list {
+  width: 100%;
+  max-width: 600px;
+}
