@@ -28,7 +28,6 @@ pub fn get_clipboard_history(conn: &Connection, limit: usize) -> Result<Vec<(Str
     let history_iter = stmt.query_map([limit as i64], |row| {
         let content: String = row.get(0)?;
         let timestamp: String = row.get(1)?;
-        println!("Raw timestamp from database: {}", timestamp);
         
         let datetime = DateTime::parse_from_rfc3339(&timestamp)
             .map_err(|e| {

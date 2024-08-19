@@ -59,7 +59,7 @@ function App() {
 
   return (
     <div className="container">
-      <p>{error}</p>
+      {/* <p>{error}</p> */}
       {/* <p>Niceeee</p>
       // <p>{error}</p>
       <div>
