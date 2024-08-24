@@ -1012,10 +1012,6 @@ snapshots:
     dependencies:
       '@tauri-apps/api': 2.0.0-rc.0
 
-  '@tauri-apps/plugin-clipboard-manager@2.0.0-rc.0':
-    dependencies:
-      '@tauri-apps/api': 2.0.0-rc.0
-
   '@types/babel__core@7.20.5':
     dependencies:
       '@babel/parser': 7.24.7
