@@ -9,6 +9,12 @@
   color: #333;
 }
 
+@media (prefers-color-scheme: dark) {
+  .clipboard-viewer h2 {
+    color: white;
+  }
+}
+
 .clipboard-list {
   width: 100%;
   max-width: 600px;
