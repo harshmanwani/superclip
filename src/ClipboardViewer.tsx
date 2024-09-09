@@ -48,6 +48,7 @@ function ClipboardViewer() {
     <div className="clipboard-viewer">
       <div className="header">
         <h2>Clipboard History</h2>
+        <span className='count'>({history && history.length || ""})</span>
         <button onClick={clearClipboardHistory} className="clear-button">
           <FaTrash />
         </button>

@@ -5,8 +5,14 @@
 .header {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: baseline;
   margin-bottom: 1rem;
+}
+
+.count {
+  margin: 0 5px;
+  opacity: 0.5;
+  font-size: 0.9rem;
 }
 
 .clipboard-viewer h2 {
@@ -39,9 +45,11 @@
   .clipboard-viewer h2 {
     color: white;
   }
+
   .clear-button {
     color: #999;
   }
+
   .clear-button:hover {
     color: #ff6b6b;
   }
