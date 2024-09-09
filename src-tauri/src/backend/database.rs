@@ -1,7 +1,7 @@
-use chrono::{DateTime, Local, NaiveDateTime, Utc};
+use chrono::{DateTime, Local, Utc};
 use directories::ProjectDirs;
 use rusqlite::ffi::Error as SqliteError;
-use rusqlite::{types::FromSql, Connection, Result};
+use rusqlite::{Connection, Result};
 use std::fs;
 
 use once_cell::sync::Lazy;

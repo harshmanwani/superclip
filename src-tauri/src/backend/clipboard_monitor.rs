@@ -2,7 +2,6 @@ use std::time::Duration;
 use crate::backend::shared::SKIP_NEXT_SAVE;
 use crate::backend::database::{save_clipboard_content, DB_CONNECTION};
 use clipboard::{ClipboardContext, ClipboardProvider};
-use tauri::Manager;
 use crate::fns::emit_clipboard_updated;
 use std::sync::atomic::Ordering;
 
