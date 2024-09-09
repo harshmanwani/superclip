@@ -9,8 +9,11 @@ use tauri::Manager;
 use crate::fns::emit_clipboard_updated;
 
 pub async fn run_clipboard_monitor(app_handle: &tauri::AppHandle) {
-    let mut last_clipboard_content = String::new();
+    let mut last_clipboard_content = get_clipboard_content();
     let conn = get_database_connection().expect("Failed to open database connection");
+
+    // Add a small delay before starting the monitor
+    std::thread::sleep(Duration::from_secs(1));
 
     loop {
         let current_content = get_clipboard_content();
