@@ -11,8 +11,9 @@ mod backend {
     pub mod commands;
 }
 
-use backend::{clipboard_monitor::run_clipboard_monitor, database::initialize_database};
+use backend::{clipboard_monitor::run_clipboard_monitor, database::DB_CONNECTION};
 use futures::executor::block_on; // Added this line to import the futures crate
+use once_cell::sync::Lazy; // Added this line to import Lazy
 
 use tauri::Manager;
 // use crate::database::TursoClient;
@@ -27,9 +28,12 @@ fn main() {
         ])
         .plugin(tauri_nspanel::init())
         .setup(|app| {
+            // Initialize the database connection
+            Lazy::force(&DB_CONNECTION);
+            
             app.set_activation_policy(tauri::ActivationPolicy::Accessory);
             
-            let client = initialize_database().expect("Failed to initialize database");
+            // let client = initialize_database().expect("Failed to initialize database");
             let app_handle = app.app_handle();
 
             tray::create(app_handle)?;

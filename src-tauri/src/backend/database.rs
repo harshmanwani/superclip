@@ -4,12 +4,21 @@ use rusqlite::ffi::Error as SqliteError;
 use rusqlite::{types::FromSql, Connection, Result};
 use std::fs;
 
-/*
-This approach will store the database in:
-macOS: ~/Library/Application Support/com.adeelabs.clipsync/
-Windows: C:\Users\<username>\AppData\Roaming\adeelabs\clipsync\
-*/
-pub fn initialize_database() -> Result<Connection> {
+use once_cell::sync::Lazy;
+use std::sync::{Arc, Mutex};
+
+pub static DB_CONNECTION: Lazy<Arc<Mutex<Connection>>> = Lazy::new(|| {
+    Arc::new(Mutex::new(
+        initialize_database().expect("Failed to initialize database"),
+    ))
+});
+
+fn initialize_database() -> rusqlite::Result<Connection> {
+    // Move the initialization logic here from the current initialize_database function
+    // ...
+    // (Keep the existing implementation)
+    // Move the initialization logic here from the current initialize_database function
+    // ...
     let project_dirs = ProjectDirs::from("com", "adeelabs", "clipsync")
         .expect("Failed to get project directories");
     let data_dir = project_dirs.data_dir();
@@ -31,6 +40,12 @@ pub fn initialize_database() -> Result<Connection> {
     Ok(conn)
 }
 
+
+/*
+This approach will store the database in:
+macOS: ~/Library/Application Support/com.adeelabs.clipsync/
+Windows: C:\Users\<username>\AppData\Roaming\adeelabs\clipsync\
+*/
 pub fn save_clipboard_content(conn: &Connection, content: &str) -> Result<()> {
     let now = Utc::now();
     conn.execute(
