@@ -30,3 +30,28 @@ pub fn fetch_clipboard_history() -> Result<Vec<ClipboardEntry>, String> {
         },
     }
 }
+
+#[tauri::command]
+pub fn clear_clipboard_history() -> Result<(), String> {
+    let conn = DB_CONNECTION.lock().unwrap();
+    let mut attempts = 0;
+    const MAX_ATTEMPTS: usize = 5;
+
+    while attempts < MAX_ATTEMPTS {
+        match conn.execute("DELETE FROM clipboard", []) {
+            Ok(_) => {
+                println!("Deleted all the entries from database");
+                return Ok(())
+            },
+            Err(e) => {
+                if e.to_string().contains("DatabaseBusy") {
+                    attempts += 1;
+                    std::thread::sleep(std::time::Duration::from_millis(100)); // Wait before retrying
+                } else {
+                    return Err(format!("Failed to clear clipboard history: {}", e));
+                }
+            }
+        }
+    }
+    Err("Failed to clear clipboard history after multiple attempts".to_string())
+}

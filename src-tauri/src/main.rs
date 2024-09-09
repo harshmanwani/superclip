@@ -7,8 +7,8 @@ mod tray;
 // mod platform;
 mod backend {
     pub mod clipboard_monitor;
-    pub mod database;
     pub mod commands;
+    pub mod database;
 }
 
 use backend::{clipboard_monitor::run_clipboard_monitor, database::DB_CONNECTION};
@@ -24,15 +24,16 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             command::init,
             command::show_menubar_panel,
-            backend::commands::fetch_clipboard_history
+            backend::commands::fetch_clipboard_history,
+            backend::commands::clear_clipboard_history
         ])
         .plugin(tauri_nspanel::init())
         .setup(|app| {
             // Initialize the database connection
             Lazy::force(&DB_CONNECTION);
-            
+
             app.set_activation_policy(tauri::ActivationPolicy::Accessory);
-            
+
             // let client = initialize_database().expect("Failed to initialize database");
             let app_handle = app.app_handle();
 

@@ -2,16 +2,45 @@
   padding: 10px;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
 .clipboard-viewer h2 {
   font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 1rem;
   color: #333;
+  margin: 0;
+}
+
+.clear-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.clear-button:hover {
+  color: #ff4d4d;
 }
 
 @media (prefers-color-scheme: dark) {
   .clipboard-viewer h2 {
     color: white;
+  }
+  .clear-button {
+    color: #999;
+  }
+  .clear-button:hover {
+    color: #ff6b6b;
   }
 }
 
