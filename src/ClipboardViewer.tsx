@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
+import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 import './ClipboardViewer.css';
 import TextItem from './Components/TextCard';
 import { ClipboardEntry } from './types';
 import { FaTrash } from 'react-icons/fa';
 
-
 function ClipboardViewer() {
   const [history, setHistory] = useState<ClipboardEntry[]>([]);
+  const [isWriting, setIsWriting] = useState(false);
 
   useEffect(() => {
     // Function to fetch clipboard history
@@ -44,6 +45,20 @@ function ClipboardViewer() {
     }
   };
 
+  const handleItemClick = async (content: string) => {
+    if (isWriting) return;
+    setIsWriting(true);
+    try {
+      await invoke('mark_user_copy');
+      await writeText(content);
+      console.log('Content copied to clipboard');
+    } catch (error) {
+      console.error('Failed to write to clipboard:', error);
+    } finally {
+      setIsWriting(false);
+    }
+  };
+
   return (
     <div className="clipboard-viewer">
       <div className="header">
@@ -55,7 +70,12 @@ function ClipboardViewer() {
       </div>
       <div className="clipboard-list">
         {history.map((item, index) => (
-          <TextItem key={index} content={item.content} timestamp={item.timestamp} />
+          <TextItem
+            key={index}
+            content={item.content}
+            timestamp={item.timestamp}
+            onClick={() => handleItemClick(item.content)}
+          />
         ))}
       </div>
     </div>

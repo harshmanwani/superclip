@@ -1,6 +1,13 @@
 use crate::backend::database::{get_clipboard_history, DB_CONNECTION};
+use crate::backend::shared::SKIP_NEXT_SAVE;
 use serde::Serialize;
 use chrono::{DateTime, Local};
+use std::sync::atomic::Ordering;
+
+// Create a global instance of SharedState
+// static SHARED_STATE: Lazy<Arc<SharedState>> = Lazy::new(|| {
+//     Arc::new(SharedState::new())
+// });
 
 #[derive(Serialize, Debug)]
 pub struct ClipboardEntry {
@@ -54,4 +61,10 @@ pub fn clear_clipboard_history() -> Result<(), String> {
         }
     }
     Err("Failed to clear clipboard history after multiple attempts".to_string())
+}
+
+#[tauri::command]
+pub fn mark_user_copy() -> Result<(), String> {
+    SKIP_NEXT_SAVE.store(true, Ordering::SeqCst);
+    Ok(())
 }

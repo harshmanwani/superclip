@@ -9,6 +9,7 @@ mod backend {
     pub mod clipboard_monitor;
     pub mod commands;
     pub mod database;
+    pub mod shared;
 }
 
 use backend::{clipboard_monitor::run_clipboard_monitor, database::DB_CONNECTION};
@@ -25,7 +26,8 @@ fn main() {
             command::init,
             command::show_menubar_panel,
             backend::commands::fetch_clipboard_history,
-            backend::commands::clear_clipboard_history
+            backend::commands::clear_clipboard_history,
+            backend::commands::mark_user_copy,
         ])
         .plugin(tauri_nspanel::init())
         .setup(|app| {
@@ -34,13 +36,12 @@ fn main() {
 
             app.set_activation_policy(tauri::ActivationPolicy::Accessory);
 
-            // let client = initialize_database().expect("Failed to initialize database");
             let app_handle = app.app_handle();
 
             tray::create(app_handle)?;
 
             // Start the clipboard monitor
-            let app_handle_clone = app_handle.clone();
+            let app_handle_clone = app.app_handle().clone();
             std::thread::spawn(move || {
                 block_on(run_clipboard_monitor(&app_handle_clone));
             });

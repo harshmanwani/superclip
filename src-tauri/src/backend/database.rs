@@ -40,7 +40,6 @@ fn initialize_database() -> rusqlite::Result<Connection> {
     Ok(conn)
 }
 
-
 pub fn save_clipboard_content(conn: &Connection, content: &str) -> Result<()> {
     let now = Utc::now();
     conn.execute(

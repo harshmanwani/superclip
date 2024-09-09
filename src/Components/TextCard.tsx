@@ -2,7 +2,11 @@ import React from 'react';
 import './TextCard.css';
 import { ClipboardEntry } from '../types';
 
-const TextCard: React.FC<ClipboardEntry> = ({ content, timestamp }) => {
+interface TextCardProps extends ClipboardEntry {
+  onClick: () => void;
+}
+
+const TextCard: React.FC<TextCardProps> = ({ content, timestamp, onClick }) => {
   const formatTimestamp = (timestamp: string) => {
     const date = new Date(timestamp);
     const now = new Date();
@@ -27,10 +31,12 @@ const TextCard: React.FC<ClipboardEntry> = ({ content, timestamp }) => {
     return date.toLocaleString('en-US', options);
   };
 
-  return <div className="text-card">
-    <p className="text-content">{content}</p>
-    <span className="text-timestamp">{formatTimestamp(timestamp)}</span>
-  </div>
+  return (
+    <div className="text-card" onClick={onClick}>
+      <p className="text-content">{content}</p>
+      <span className="text-timestamp">{formatTimestamp(timestamp)}</span>
+    </div>
+  );
 };
 
 export default TextCard;
