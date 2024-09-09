@@ -24,7 +24,6 @@ pub fn fetch_clipboard_history() -> Result<Vec<ClipboardEntry>, String> {
                         .collect();
                     println!("Converted {} entries to ClipboardEntry", entries.len());
                     Ok(entries)
-            // ... rest of the function ...
         },
         Err(e) => {
             Err(format!("Failed to fetch clipboard history: {}", e))

@@ -33,5 +33,3 @@ fn get_clipboard_content() -> String {
     let mut ctx: ClipboardContext = ClipboardProvider::new().unwrap();
     ctx.get_contents().unwrap_or_else(|_| String::new())
 }
-
-// Remove the get_database_connection function as it's no longer needed

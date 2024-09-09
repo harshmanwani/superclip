@@ -13,12 +13,12 @@ pub static DB_CONNECTION: Lazy<Arc<Mutex<Connection>>> = Lazy::new(|| {
     ))
 });
 
+/*
+This approach will store the database in:
+macOS: ~/Library/Application Support/com.adeelabs.clipsync/
+Windows: C:\Users\<username>\AppData\Roaming\adeelabs\clipsync\
+*/
 fn initialize_database() -> rusqlite::Result<Connection> {
-    // Move the initialization logic here from the current initialize_database function
-    // ...
-    // (Keep the existing implementation)
-    // Move the initialization logic here from the current initialize_database function
-    // ...
     let project_dirs = ProjectDirs::from("com", "adeelabs", "clipsync")
         .expect("Failed to get project directories");
     let data_dir = project_dirs.data_dir();
@@ -41,11 +41,6 @@ fn initialize_database() -> rusqlite::Result<Connection> {
 }
 
 
-/*
-This approach will store the database in:
-macOS: ~/Library/Application Support/com.adeelabs.clipsync/
-Windows: C:\Users\<username>\AppData\Roaming\adeelabs\clipsync\
-*/
 pub fn save_clipboard_content(conn: &Connection, content: &str) -> Result<()> {
     let now = Utc::now();
     conn.execute(
