@@ -37,7 +37,7 @@ fn main() {
             // Start the clipboard monitor
             let app_handle_clone = app_handle.clone();
             std::thread::spawn(move || {
-                block_on(run_clipboard_monitor(client, &app_handle_clone));
+                block_on(run_clipboard_monitor(&app_handle_clone));
             });
 
             Ok(())
