@@ -3,6 +3,37 @@
 version = 3
 
 [[package]]
+name = "ClipSync"
+version = "0.0.0"
+dependencies = [
+ "chrono",
+ "clipboard",
+ "cocoa 0.24.1",
+ "directories",
+ "dotenvy",
+ "futures",
+ "libsql",
+ "libsql-client",
+ "libsqlite3-sys",
+ "monitor",
+ "objc",
+ "once_cell",
+ "reqwest 0.11.27",
+ "rusqlite",
+ "serde",
+ "serde_json",
+ "tauri",
+ "tauri-build",
+ "tauri-nspanel",
+ "tauri-plugin-clipboard-manager",
+ "tauri-plugin-shell",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+ "turso",
+]
+
+[[package]]
 name = "addr2line"
 version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4670,37 +4701,6 @@ dependencies = [
  "url",
  "uuid",
  "walkdir",
-]
-
-[[package]]
-name = "tauri-macos-menubar-app-example"
-version = "0.0.0"
-dependencies = [
- "chrono",
- "clipboard",
- "cocoa 0.24.1",
- "directories",
- "dotenvy",
- "futures",
- "libsql",
- "libsql-client",
- "libsqlite3-sys",
- "monitor",
- "objc",
- "once_cell",
- "reqwest 0.11.27",
- "rusqlite",
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "tauri-nspanel",
- "tauri-plugin-clipboard-manager",
- "tauri-plugin-shell",
- "tokio",
- "tracing",
- "tracing-subscriber",
- "turso",
 ]
 
 [[package]]

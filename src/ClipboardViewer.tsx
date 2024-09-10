@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { writeText, readText } from '@tauri-apps/plugin-clipboard-manager';
 import './ClipboardViewer.css';
 import TextCard from './Components/TextCard';
 import { ClipboardEntry } from './types';
-import { FaTrash, FaTimes } from 'react-icons/fa';
+import { FaTrash } from 'react-icons/fa';
 // import { appWindow } from '@tauri-apps/api/window';
 
 function ClipboardViewer() {

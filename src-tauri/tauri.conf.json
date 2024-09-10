@@ -16,9 +16,9 @@
       "icons/icon.ico"
     ]
   },
-  "productName": "tauri-macos-menubar-app-example",
+  "productName": "ClipSync",
   "version": "0.2.0",
-  "identifier": "com.example.dev",
+  "identifier": "com.adeelabs.clipsync",
   "plugins": {},
   "app": {
     "windows": [

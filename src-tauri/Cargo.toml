@@ -1,5 +1,5 @@
 [package]
-name = "tauri-macos-menubar-app-example"
+name = "ClipSync"
 version = "0.0.0"
 description = "A Tauri App"
 authors = ["Victor Aremu <me@victorare.mu>"]
