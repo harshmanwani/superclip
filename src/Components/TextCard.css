@@ -4,7 +4,7 @@
   padding: 8px 12px;
   margin-bottom: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease, transform 0.1s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   position: relative;
   display: flex;
@@ -14,10 +14,15 @@
 
 .text-card:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 
 .text-card.current {
   background-color: var(--current-card-bg);
+}
+
+.text-card.copied {
+  animation: pulse 0.3s ease-out;
 }
 
 .text-content {
@@ -45,6 +50,30 @@
   background-color: var(--current-indicator-bg);
   padding: 2px 4px;
   border-radius: 4px;
+}
+
+.copied-indicator {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  font-size: 10px;
+  color: var(--accent-color);
+  background-color: var(--current-indicator-bg);
+  padding: 2px 4px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.text-card.copied .copied-indicator {
+  opacity: 1;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
 /* Remove the tooltip styles */

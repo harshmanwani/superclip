@@ -5,9 +5,10 @@ import { ClipboardEntry } from '../types';
 interface TextCardProps extends ClipboardEntry {
   onClick: () => void;
   isCurrent: boolean;
+  isCopied: boolean;
 }
 
-const TextCard: React.FC<TextCardProps> = ({ content, timestamp, onClick, isCurrent }) => {
+const TextCard: React.FC<TextCardProps> = ({ content, timestamp, onClick, isCurrent, isCopied }) => {
   const formatTimestamp = (timestamp: string) => {
     const date = new Date(timestamp);
     const now = new Date();
@@ -32,13 +33,14 @@ const TextCard: React.FC<TextCardProps> = ({ content, timestamp, onClick, isCurr
 
   return (
     <div 
-      className={`text-card ${isCurrent ? 'current' : ''}`} 
+      className={`text-card ${isCurrent ? 'current' : ''} ${isCopied ? 'copied' : ''}`} 
       onClick={onClick}
       title={content}
     >
       <p className="text-content">{content}</p>
       <span className="text-timestamp">{formatTimestamp(timestamp)}</span>
       {isCurrent && <span className="current-indicator">Current</span>}
+      {isCopied && <span className="copied-indicator">Copied!</span>}
     </div>
   );
 };

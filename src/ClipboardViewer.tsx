@@ -5,27 +5,34 @@ import { writeText, readText } from '@tauri-apps/plugin-clipboard-manager';
 import './ClipboardViewer.css';
 import TextCard from './Components/TextCard';
 import { ClipboardEntry } from './types';
-import { FaTrash } from 'react-icons/fa';
+import { FaTrash, FaTimes } from 'react-icons/fa';
+// import { appWindow } from '@tauri-apps/api/window';
 
 function ClipboardViewer() {
   const [currentClipboard, setCurrentClipboard] = useState<string>('');
   const [history, setHistory] = useState<ClipboardEntry[]>([]);
   const [isWriting, setIsWriting] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const fetchCurrentClipboard = async () => {
+    const content = await readText();
+    setCurrentClipboard(content || '');
+  }
+
+  const fetchHistory = async () => {
+    try {
+      const clipboardHistory = await invoke('fetch_clipboard_history');
+      setHistory((clipboardHistory as ClipboardEntry[]).filter((item, index) => 
+        index === 0 ? item.content !== currentClipboard : true
+      ));
+    } catch (error) {
+      console.error('Failed to fetch clipboard history:', error);
+    }
+  }
+
   useEffect(() => {
-    async function fetchCurrentClipboard() {
-      const content = await readText();
-      setCurrentClipboard(content || '');
-    }
-    async function fetchHistory() {
-      try {
-        const clipboardHistory = await invoke('fetch_clipboard_history');
-        setHistory((clipboardHistory as ClipboardEntry[]).filter(item => item.content !== currentClipboard));
-      } catch (error) {
-        console.error('Failed to fetch clipboard history:', error);
-      }
-    }
 
     fetchCurrentClipboard();
     fetchHistory();
@@ -40,6 +47,12 @@ function ClipboardViewer() {
     };
   }, [currentClipboard]);
 
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = 0;
+    }
+  }, []);
+
   const clearClipboardHistory = async () => {
     try {
       await invoke('clear_clipboard_history');
@@ -49,19 +62,35 @@ function ClipboardViewer() {
     }
   };
 
-  const handleItemClick = async (content: string) => {
+  const handleItemClick = async (content: string, index: number) => {
     if (isWriting) return;
     setIsWriting(true);
     try {
       await invoke('mark_user_copy');
       await writeText(content);
+      setCopiedIndex(index);
+      setTimeout(() => setCopiedIndex(null), 1000);
       console.log('Content copied to clipboard');
     } catch (error) {
       console.error('Failed to write to clipboard:', error);
     } finally {
       setIsWriting(false);
+      fetchCurrentClipboard();
     }
   };
+
+  const confirmClearHistory = () => {
+    setShowConfirmation(true);
+  };
+
+  const handleClearHistory = async () => {
+    await clearClipboardHistory();
+    setShowConfirmation(false);
+  };
+
+  // const handleQuitApp = async () => {
+  //   await appWindow.close();
+  // };
 
   return (
     <div className="clipboard-viewer" ref={containerRef}>
@@ -73,8 +102,9 @@ function ClipboardViewer() {
           <TextCard
             content={currentClipboard}
             timestamp={new Date().toISOString()}
-            onClick={() => handleItemClick(currentClipboard)}
+            onClick={() => handleItemClick(currentClipboard, -1)}
             isCurrent={true}
+            isCopied={copiedIndex === -1}
           />
         </div>
         <div className="divider">
@@ -86,14 +116,28 @@ function ClipboardViewer() {
               key={index}
               content={item.content}
               timestamp={item.timestamp}
-              onClick={() => handleItemClick(item.content)}
+              onClick={() => handleItemClick(item.content, index)}
               isCurrent={false}
+              isCopied={copiedIndex === index}
             />
           ))}
         </div>
-        <button onClick={clearClipboardHistory} className="clear-button">
-          <FaTrash /> Clear History
-        </button>
+        <div className="button-container">
+          {showConfirmation ? (
+            <div className="confirmation">
+              <p>Are you sure?</p>
+              <button onClick={handleClearHistory} className="confirm-button">Yes</button>
+              <button onClick={() => setShowConfirmation(false)} className="cancel-button">No</button>
+            </div>
+          ) : (
+            <button onClick={confirmClearHistory} className="clear-button">
+              <FaTrash /> Clear History
+            </button>
+          )}
+          {/* <button onClick={handleQuitApp} className="quit-button">
+            <FaTimes /> Quit App
+          </button> */}
+        </div>
       </div>
     </div>
   );

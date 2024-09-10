@@ -25,6 +25,10 @@
   --current-indicator-bg: #e9ecef;
   --tooltip-bg: #333;
   --tooltip-text: #fff;
+  --button-hover-bg: #0056b3;
+  --quit-button-bg: #dc3545;
+  --confirm-button-bg: #28a745;
+  --cancel-button-bg: #6c757d;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -43,6 +47,10 @@
     --current-indicator-bg: #3a3a3a;
     --tooltip-bg: #f0f0f0;
     --tooltip-text: #333;
+    --button-hover-bg: #0056b3;
+    --quit-button-bg: #dc3545;
+    --confirm-button-bg: #28a745;
+    --cancel-button-bg: #6c757d;
   }
 }
 

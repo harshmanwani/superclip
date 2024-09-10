@@ -1,6 +1,6 @@
 .clipboard-viewer {
   font-family: 'Inter', sans-serif;
-  max-width: 92vw;
+  width: 92vw;
   height: 400px;
   margin: 0 auto;
   padding-top: 16px;
@@ -10,6 +10,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .header {
@@ -29,6 +30,7 @@
   flex-grow: 1;
   overflow-y: auto;
   padding-right: 8px;
+  scroll-behavior: smooth;
 }
 
 .clear-button {
@@ -47,13 +49,11 @@
   width: 50%;
   margin: auto;
   margin-bottom: 1rem;
-  /* position: absolute;
-  bottom: 16px;
-  left: 16px; */
+  transition: background-color 0.2s ease;
 }
 
-.clear-button svg {
-  margin-right: 8px;
+.clear-button:hover {
+  background-color: var(--button-hover-bg);
 }
 
 .current-clipboard {
@@ -99,4 +99,74 @@
 .clipboard-content::-webkit-scrollbar-thumb {
   background-color: var(--text-secondary);
   border-radius: 3px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  margin-bottom: 1rem;
+}
+
+.clear-button,
+.quit-button {
+  background-color: var(--button-bg);
+  outline: none;
+  border: none;
+  color: var(--button-text);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.clear-button:hover,
+.quit-button:hover {
+  background-color: var(--button-hover-bg);
+}
+
+.quit-button {
+  background-color: var(--quit-button-bg);
+}
+
+.confirmation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.confirmation p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.confirm-button,
+.cancel-button {
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.confirm-button {
+  background-color: var(--confirm-button-bg);
+  color: var(--button-text);
+  border: none;
+}
+
+.cancel-button {
+  background-color: var(--cancel-button-bg);
+  color: var(--button-text);
+  border: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
