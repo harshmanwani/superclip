@@ -141,7 +141,7 @@ function ClipboardViewer() {
             </div>
           ) : (
             <button onClick={confirmClearHistory} className="clear-button">
-              <FaTrash /> Clear History
+              <FaTrash />&nbsp;Clear History
             </button>
           )}
           {/* <button onClick={handleQuitApp} className="quit-button">

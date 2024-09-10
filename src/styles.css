@@ -13,44 +13,44 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  --bg-color: #f0f2f5;
-  --text-color: #333;
-  --text-secondary: #6c757d;
-  --card-bg: #ffffff;
-  --current-card-bg: #e9ecef;
-  --divider-color: #dee2e6;
-  --button-bg: #007bff;
-  --button-text: #ffffff;
-  --accent-color: #28a745;
-  --current-indicator-bg: #e9ecef;
-  --tooltip-bg: #333;
-  --tooltip-text: #fff;
-  --button-hover-bg: #0056b3;
-  --quit-button-bg: #dc3545;
-  --confirm-button-bg: #28a745;
-  --cancel-button-bg: #6c757d;
+  --bg-color: #eaeaea; /* Softer, darker light background */
+  --text-color: #2c2c2e; /* Darker text color */
+  --text-secondary: #7a7a7a; /* Muted secondary text */
+  --card-bg: #ffffff; /* White card background */
+  --current-card-bg: #d1d1d1; /* Light current card background */
+  --divider-color: #ccc; /* Softer divider color */
+  --button-bg: #007bff; /* Blue button color */
+  --button-text: #ffffff; /* White button text */
+  --accent-color: #28a745; /* Green accent color */
+  --current-indicator-bg: #d1d1d1; /* Light current indicator */
+  --tooltip-bg: #ffffff; /* White tooltip background */
+  --tooltip-text: #333; /* Dark tooltip text */
+  --button-hover-bg: #0056b3; /* Darker blue on hover */
+  --quit-button-bg: #dc3545; /* Red quit button */
+  --confirm-button-bg: #28a745; /* Green confirm button */
+  --cancel-button-bg: #6c757d; /* Muted cancel button */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --bg-color: #2c2c2e; /* Softer dark background */
+    --text-color: #e5e5ea; /* Lighter text color */
+    --text-secondary: #d1d1d6; /* Muted secondary text */
+    --card-bg: #3a3a3c; /* Slightly lighter card background */
+    --current-card-bg: #4a4a4c; /* Lighter current card background */
+    --divider-color: #48484a; /* Softer divider color */
+    --button-bg: #007aff; /* Blue button color */
+    --button-text: #ffffff; /* White button text */
+    --accent-color: #34c759; /* Green accent color */
+    --current-indicator-bg: #4a4a4c; /* Lighter current indicator */
+    --tooltip-bg: #333333; /* Darker tooltip background */
+    --tooltip-text: #ffffff; /* White tooltip text */
+    --button-hover-bg: #0051a8; /* Darker blue on hover */
+    --quit-button-bg: #ff3b30; /* Red quit button */
+    --confirm-button-bg: #28a745; /* Green confirm button */
+    --cancel-button-bg: #8e8e93; /* Muted cancel button */
     background-color: var(--bg-color);
-    color: #f1f1f1;
-    --bg-color: #1e1e1e;
-    --text-color: #f1f1f1;
-    --text-secondary: #a0a0a0;
-    --card-bg: #2d2d2d;
-    --current-card-bg: #3a3a3a;
-    --divider-color: #4a4a4a;
-    --button-bg: #0056b3;
-    --button-text: #ffffff;
-    --accent-color: #28a745;
-    --current-indicator-bg: #3a3a3a;
-    --tooltip-bg: #f0f0f0;
-    --tooltip-text: #333;
-    --button-hover-bg: #0056b3;
-    --quit-button-bg: #dc3545;
-    --confirm-button-bg: #28a745;
-    --cancel-button-bg: #6c757d;
+    color: var(--text-color);
   }
 }
 
