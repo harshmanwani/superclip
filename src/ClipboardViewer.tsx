@@ -139,11 +139,11 @@ function ClipboardViewer() {
               <button onClick={handleClearHistory} className="confirm-button">Yes</button>
               <button onClick={() => setShowConfirmation(false)} className="cancel-button">No</button>
             </div>
-          ) : (
+          ) : history.length && (
             <button onClick={confirmClearHistory} className="clear-button">
               <FaTrash />&nbsp;Clear History
             </button>
-          )}
+          ) || ""}
           {/* <button onClick={handleQuitApp} className="quit-button">
             <FaTimes /> Quit App
           </button> */}

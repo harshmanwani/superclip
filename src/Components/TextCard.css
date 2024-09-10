@@ -1,7 +1,7 @@
 .text-card {
   background-color: var(--card-bg);
   border-radius: 8px;
-  padding: 8px 12px;
+  padding: 6px 8px;
   margin-bottom: 8px;
   cursor: pointer;
   transition: all 0.2s ease, transform 0.1s ease;
@@ -43,13 +43,13 @@
 
 .current-indicator {
   position: absolute;
-  top: 1px;
+  top: 0px;
   right: 4px;
   font-size: 8px;
   color: var(--accent-color);
   background-color: var(--current-indicator-bg);
-  padding: 2px 4px;
-  border-radius: 4px;
+  /* padding: 2px 4px; */
+  /* border-radius: 4px; */
 }
 
 .copied-indicator {
