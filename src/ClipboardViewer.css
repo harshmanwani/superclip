@@ -1,7 +1,7 @@
 .clipboard-viewer {
   font-family: 'Inter', sans-serif;
   width: 92vw;
-  height: 400px;
+  height: 100vh;
   margin: 0 auto;
   padding-top: 16px;
   background-color: var(--bg-color);

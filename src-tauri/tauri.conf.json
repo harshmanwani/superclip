@@ -25,9 +25,9 @@
       {
         "fullscreen": false,
         "resizable": false,
-        "title": "menubar",
-        "width": 350,
-        "height": 400,
+        "title": "ClipSync",
+        "width": 300,
+        "height": 500,
         "decorations": false,
         "transparent": true,
         "visible": false
