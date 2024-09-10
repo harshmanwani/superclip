@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
 // import { emit, listen } from '@tauri-apps/api/event'
 // import { writeText, readText } from '@tauri-apps/plugin-clipboard-manager';
-import { listen } from '@tauri-apps/api/event';
+// import { listen } from '@tauri-apps/api/event';
 import ClipboardViewer from './ClipboardViewer';
 
 import "./App.css";
@@ -15,10 +15,10 @@ function App() {
   useEffect(() => {
     const initApp = async () => {
       await invoke("init");
-      listen('panel-shown', (event) => {
-        console.log(event);
-        // readClipboard();
-      });
+      // listen('panel-shown', (event) => {
+      //   console.log(event);
+      //   // readClipboard();
+      // });
     };
     initApp();
   }, []);

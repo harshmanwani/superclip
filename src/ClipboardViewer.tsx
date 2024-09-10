@@ -32,8 +32,14 @@ function ClipboardViewer() {
     }
   }
 
-  useEffect(() => {
+  const scrollTop = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = 0;
+    }
+  }
 
+  useEffect(() => {
+    scrollTop();
     fetchCurrentClipboard();
     fetchHistory();
 
@@ -45,12 +51,16 @@ function ClipboardViewer() {
     return () => {
       unlisten.then(f => f());
     };
-  }, [currentClipboard]);
+  }, []);
 
   useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTop = 0;
-    }
+    const unlistenPanelOpen = listen('panel-shown', () => {
+      scrollTop();
+    });
+
+    return () => {
+      unlistenPanelOpen.then(f => f());
+    };
   }, []);
 
   const clearClipboardHistory = async () => {
@@ -93,11 +103,11 @@ function ClipboardViewer() {
   // };
 
   return (
-    <div className="clipboard-viewer" ref={containerRef}>
+    <div className="clipboard-viewer">
       <div className="header">
         <h2>Clipboard</h2>
       </div>
-      <div className="clipboard-content">
+      <div className="clipboard-content" ref={containerRef}>
         <div className="current-clipboard">
           <TextCard
             content={currentClipboard}
