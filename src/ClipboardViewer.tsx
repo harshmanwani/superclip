@@ -1,40 +1,44 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
-import { writeText } from '@tauri-apps/plugin-clipboard-manager';
+import { writeText, readText } from '@tauri-apps/plugin-clipboard-manager';
 import './ClipboardViewer.css';
-import TextItem from './Components/TextCard';
+import TextCard from './Components/TextCard';
 import { ClipboardEntry } from './types';
 import { FaTrash } from 'react-icons/fa';
 
 function ClipboardViewer() {
+  const [currentClipboard, setCurrentClipboard] = useState<string>('');
   const [history, setHistory] = useState<ClipboardEntry[]>([]);
   const [isWriting, setIsWriting] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Function to fetch clipboard history
+    async function fetchCurrentClipboard() {
+      const content = await readText();
+      setCurrentClipboard(content || '');
+    }
     async function fetchHistory() {
       try {
         const clipboardHistory = await invoke('fetch_clipboard_history');
-        setHistory(clipboardHistory as ClipboardEntry[]);
+        setHistory((clipboardHistory as ClipboardEntry[]).filter(item => item.content !== currentClipboard));
       } catch (error) {
         console.error('Failed to fetch clipboard history:', error);
       }
     }
 
-    // Fetch history immediately on component mount
+    fetchCurrentClipboard();
     fetchHistory();
 
-    // Listen for clipboard update events
     const unlisten = listen('clipboard-updated', () => {
+      fetchCurrentClipboard();
       fetchHistory();
     });
 
-    // Cleanup function
     return () => {
       unlisten.then(f => f());
     };
-  }, []);
+  }, [currentClipboard]);
 
   const clearClipboardHistory = async () => {
     try {
@@ -60,23 +64,36 @@ function ClipboardViewer() {
   };
 
   return (
-    <div className="clipboard-viewer">
+    <div className="clipboard-viewer" ref={containerRef}>
       <div className="header">
-        <h2>Clipboard History</h2>
-        <span className='count'>({history && history.length || ""})</span>
-        <button onClick={clearClipboardHistory} className="clear-button">
-          <FaTrash />
-        </button>
+        <h2>Clipboard</h2>
       </div>
-      <div className="clipboard-list">
-        {history.map((item, index) => (
-          <TextItem
-            key={index}
-            content={item.content}
-            timestamp={item.timestamp}
-            onClick={() => handleItemClick(item.content)}
+      <div className="clipboard-content">
+        <div className="current-clipboard">
+          <TextCard
+            content={currentClipboard}
+            timestamp={new Date().toISOString()}
+            onClick={() => handleItemClick(currentClipboard)}
+            isCurrent={true}
           />
-        ))}
+        </div>
+        <div className="divider">
+          <span>History ({history.length})</span>
+        </div>
+        <div className="clipboard-list">
+          {history.map((item, index) => (
+            <TextCard
+              key={index}
+              content={item.content}
+              timestamp={item.timestamp}
+              onClick={() => handleItemClick(item.content)}
+              isCurrent={false}
+            />
+          ))}
+        </div>
+        <button onClick={clearClipboardHistory} className="clear-button">
+          <FaTrash /> Clear History
+        </button>
       </div>
     </div>
   );

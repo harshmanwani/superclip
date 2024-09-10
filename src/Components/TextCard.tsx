@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './TextCard.css';
 import { ClipboardEntry } from '../types';
 
 interface TextCardProps extends ClipboardEntry {
   onClick: () => void;
+  isCurrent: boolean;
 }
 
-const TextCard: React.FC<TextCardProps> = ({ content, timestamp, onClick }) => {
+const TextCard: React.FC<TextCardProps> = ({ content, timestamp, onClick, isCurrent }) => {
   const formatTimestamp = (timestamp: string) => {
     const date = new Date(timestamp);
     const now = new Date();
-    const isThisYear = date.getFullYear() === now.getFullYear();
     const isToday = date.toDateString() === now.toDateString();
 
     let options: Intl.DateTimeFormatOptions = {
@@ -24,7 +24,6 @@ const TextCard: React.FC<TextCardProps> = ({ content, timestamp, onClick }) => {
         ...options,
         month: 'short',
         day: 'numeric',
-        year: isThisYear ? undefined : 'numeric',
       };
     }
 
@@ -32,9 +31,14 @@ const TextCard: React.FC<TextCardProps> = ({ content, timestamp, onClick }) => {
   };
 
   return (
-    <div className="text-card" onClick={onClick}>
+    <div 
+      className={`text-card ${isCurrent ? 'current' : ''}`} 
+      onClick={onClick}
+      title={content}
+    >
       <p className="text-content">{content}</p>
       <span className="text-timestamp">{formatTimestamp(timestamp)}</span>
+      {isCurrent && <span className="current-indicator">Current</span>}
     </div>
   );
 };
