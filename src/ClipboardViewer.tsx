@@ -5,7 +5,7 @@ import { writeText, readText } from '@tauri-apps/plugin-clipboard-manager';
 import './ClipboardViewer.css';
 import TextCard from './Components/TextCard';
 import { ClipboardEntry } from './types';
-import { FaTrash } from 'react-icons/fa';
+import { FaTrash, FaCog } from 'react-icons/fa';
 // import { appWindow } from '@tauri-apps/api/window';
 
 function ClipboardViewer() {
@@ -149,6 +149,11 @@ function ClipboardViewer() {
           </button> */}
         </div>
       </div>
+      <footer className="footer">
+        <button onClick={() => invoke('open_settings')} className="settings-button">
+          <FaCog />&nbsp;Settings
+        </button>
+      </footer>
     </div>
   );
 }

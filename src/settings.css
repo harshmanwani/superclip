@@ -1,0 +1,19 @@
+.settings-panel {
+  /* border-radius: 12px; */
+  width: 100%;
+  height: 100%;
+}
+
+.close-button {
+  background-color: #ff4d4d; /* Red color for close button */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 20px; /* Space above the button */
+}
+
+.close-button:hover {
+  background-color: #ff1a1a; /* Darker red on hover */
+}

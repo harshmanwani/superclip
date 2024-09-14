@@ -3,12 +3,14 @@
   "description": "permissions that were migrated from v1",
   "local": true,
   "windows": [
-    "main"
+    "main",
+    "settings"
   ],
   "permissions": [
     "core:path:default",
     "core:event:default",
     "core:window:default",
+    "core:window:allow-close",
     "core:app:default",
     "core:resources:default",
     "core:menu:default",

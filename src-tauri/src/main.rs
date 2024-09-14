@@ -25,6 +25,8 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             command::init,
             command::show_menubar_panel,
+            command::open_settings,
+            command::close_settings, // Add this line
             backend::commands::fetch_clipboard_history,
             backend::commands::clear_clipboard_history,
             backend::commands::mark_user_copy,

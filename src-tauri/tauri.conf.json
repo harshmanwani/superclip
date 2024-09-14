@@ -31,6 +31,17 @@
         "decorations": false,
         "transparent": true,
         "visible": false
+      },
+      {
+        "label": "settings",
+        "title": "Settings",
+        "url": "settings.html",
+        "width": 600,
+        "height": 400,
+        "resizable": true,
+        "decorations": true,
+        "visible": false,
+        "closable": false
       }
     ],
     "security": {
