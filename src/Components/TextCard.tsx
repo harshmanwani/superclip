@@ -32,14 +32,19 @@ const TextCard: React.FC<TextCardProps> = ({ content, timestamp, onClick, isCurr
   };
 
   return (
-    <div 
-      className={`text-card ${isCurrent ? 'current' : ''} ${isCopied ? 'copied' : ''}`} 
+    <div
+      className={`text-card ${isCurrent ? 'current' : ''} ${isCopied ? 'copied' : ''}`}
       onClick={onClick}
       title={content}
     >
       <p className="text-content">{content}</p>
-      <span className="text-timestamp">{formatTimestamp(timestamp)}</span>
-      {isCurrent && <span className="current-indicator">Current</span>}
+      {
+        isCurrent ? (
+          <span className="text-timestamp current-indicator">Current</span>
+        ) : (
+          <span className="text-timestamp">{formatTimestamp(timestamp)}</span>
+        )
+      }
       {isCopied && <span className="copied-indicator">Copied!</span>}
     </div>
   );
