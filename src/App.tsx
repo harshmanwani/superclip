@@ -7,7 +7,7 @@ import Settings from "./Settings";
 
 const appWindow = getCurrentWindow();
 
-function App() {
+function AppContent() {
   const [isSettingsWindow, setIsSettingsWindow] = useState(false);
 
   useEffect(() => {
@@ -26,6 +26,14 @@ function App() {
   }, []);
 
   return (
+    <div className="container">
+      {isSettingsWindow ? <Settings /> : <ClipboardViewer />}
+    </div>
+  );
+}
+
+function App() {
+  return (
     <Auth0Provider
       domain="dev-vd0xcbf5cr3qnwhb.us.auth0.com"
       clientId="zmJ0KKnHViwP59YqevliutRyjYKFA6MH"
@@ -34,9 +42,7 @@ function App() {
       }}
       cacheLocation="localstorage"
     >
-      <div className="container">
-        {isSettingsWindow ? <Settings /> : <ClipboardViewer />}
-      </div>
+      <AppContent />
     </Auth0Provider>
   );
 }

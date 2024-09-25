@@ -9,9 +9,7 @@ function AuthComponent({ setError }: AuthComponentProps) {
 
   const handleLogin = async () => {
     try {
-      await loginWithRedirect({
-        screen_hint: 'login',
-      });
+      await loginWithRedirect();
     } catch (error) {
       console.error('Login error:', error);
       setError('An error occurred during login. Please try again.');
