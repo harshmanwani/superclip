@@ -3,8 +3,8 @@ import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { writeText, readText } from '@tauri-apps/plugin-clipboard-manager';
 import './ClipboardViewer.css';
-import TextCard from './Components/TextCard';
-import { ClipboardEntry } from './types';
+import TextCard from './TextCard';
+import { ClipboardEntry } from '../types';
 import { FaTrash, FaCog } from 'react-icons/fa';
 // import { appWindow } from '@tauri-apps/api/window';
 
