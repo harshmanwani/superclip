@@ -1,41 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { invoke } from '@tauri-apps/api/core';
-import { open } from '@tauri-apps/plugin-shell';
+import { useAuth0 } from '@auth0/auth0-react';
 import "./settings.css"
+import AuthComponent from './Components/AuthComponent';
 
 function Settings() {
-  const [user, setUser] = useState(null);
+  const { user, isAuthenticated, logout } = useAuth0();
+  const [error, setError] = useState('');
 
-  useEffect(() => {
-    // Check if user is authenticated on component mount
-    checkAuthStatus();
-  }, []);
-
-  const checkAuthStatus = async () => {
-    try {
-      const userData = await invoke('check_auth_status');
-      setUser(userData);
-    } catch (error) {
-      console.error('Failed to check auth status:', error);
-    }
-  };
-
-  const handleLogin = async () => {
-    try {
-      // Open the Auth0 login page in the default browser
-      await open('https://dev-vd0xcbf5cr3qnwhb.us.auth0.com/authorize?client_id=zmJ0KKnHViwP59YqevliutRyjYKFA6MH&response_type=code&redirect_uri=http://localhost:1420/callback&scope=openid%20profile%20email');
-    } catch (error) {
-      console.error('Failed to open login page:', error);
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      await invoke('logout');
-      setUser(null);
-    } catch (error) {
-      console.error('Failed to logout:', error);
-    }
+  const handleLogout = () => {
+    logout({ logoutParams: { returnTo: window.location.origin } });
   };
 
   const closeSettings = async () => {
@@ -45,20 +19,26 @@ function Settings() {
   return (
     <div className="settings-panel">
       <h2>Settings</h2>
-      <div className="auth-section">
-        {user ? (
-          <div>
-            <p>Welcome, {user.name}!</p>
-            <button onClick={handleLogout} className="auth-button">
-              Log Out
-            </button>
+      <div className="settings-grid">
+        <div className="settings-item">
+          <span className="settings-label">User Account</span>
+          <div className="settings-value">
+            {isAuthenticated ? (
+              <div className="user-info">
+                <img src={user?.picture} alt={user?.name} className="user-avatar" />
+                <span>{user?.name}</span>
+                <button onClick={handleLogout} className="auth-button">
+                  Log Out
+                </button>
+              </div>
+            ) : (
+              <AuthComponent setError={setError} />
+            )}
           </div>
-        ) : (
-          <button onClick={handleLogin} className="auth-button">
-            Sign In
-          </button>
-        )}
+        </div>
+        {/* Add more settings items here */}
       </div>
+      {error && <p className="error-message">{error}</p>}
       <button onClick={closeSettings} className="close-button">
         Close
       </button>

@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import ClipboardViewer from './ClipboardViewer';
+import ClipboardViewer from './Components/ClipboardViewer';
 import { getCurrentWindow } from '@tauri-apps/api/window';
+import { Auth0Provider } from '@auth0/auth0-react';
+import Settings from "./Settings";
+
 const appWindow = getCurrentWindow();
 
-import Settings from "./Settings";
-import { Auth0Provider } from '@auth0/auth0-react';
-
 function App() {
-
   const [isSettingsWindow, setIsSettingsWindow] = useState(false);
 
   useEffect(() => {
@@ -18,8 +17,6 @@ function App() {
     initApp();
     const checkIfSettingsWindow = async () => {
       const title = await appWindow.title();
-      console.log(title, "window title")
-      // Assuming the settings window has a specific title
       if (title === 'Settings') {
         setIsSettingsWindow(true);
       }
@@ -35,11 +32,10 @@ function App() {
       authorizationParams={{
         redirect_uri: window.location.origin
       }}
+      cacheLocation="localstorage"
     >
       <div className="container">
-        {
-          isSettingsWindow ? <Settings /> : <ClipboardViewer />
-        }
+        {isSettingsWindow ? <Settings /> : <ClipboardViewer />}
       </div>
     </Auth0Provider>
   );
