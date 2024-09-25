@@ -1,9 +1,9 @@
-use std::time::Duration;
-use crate::backend::shared::SKIP_NEXT_SAVE;
 use crate::backend::database::{save_clipboard_content, DB_CONNECTION};
-use clipboard::{ClipboardContext, ClipboardProvider};
+use crate::backend::shared::SKIP_NEXT_SAVE;
 use crate::fns::emit_clipboard_updated;
+use clipboard::{ClipboardContext, ClipboardProvider};
 use std::sync::atomic::Ordering;
+use std::time::Duration;
 
 pub async fn run_clipboard_monitor(app_handle: &tauri::AppHandle) {
     let mut last_clipboard_content = get_clipboard_content();

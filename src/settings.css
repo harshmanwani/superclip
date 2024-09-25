@@ -17,3 +17,27 @@
 .close-button:hover {
   background-color: #ff1a1a; /* Darker red on hover */
 }
+
+.auth-section {
+  margin-bottom: 20px;
+}
+
+.auth-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.auth-button:hover {
+  background-color: #45a049;
+}
+
+.auth-section img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}

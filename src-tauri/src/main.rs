@@ -21,12 +21,16 @@ use tauri::Manager;
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_clipboard_manager::init())
         .invoke_handler(tauri::generate_handler![
             command::init,
             command::show_menubar_panel,
             command::open_settings,
             command::close_settings, // Add this line
+            command::check_auth_status,
+            command::handle_auth_callback,
+            command::logout,
             backend::commands::fetch_clipboard_history,
             backend::commands::clear_clipboard_history,
             backend::commands::mark_user_copy,

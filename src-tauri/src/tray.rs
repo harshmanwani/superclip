@@ -1,13 +1,13 @@
 use tauri::{
-    menu::{Menu, MenuItem},
     image::Image,
+    menu::{Menu, MenuItem},
     tray::{MouseButtonState, TrayIcon, TrayIconBuilder, TrayIconEvent},
     AppHandle,
 };
 use tauri_nspanel::ManagerExt;
 
-use crate::fns::position_menubar_panel;
 use crate::fns::emit_panel_open;
+use crate::fns::position_menubar_panel;
 
 pub fn create(app_handle: &AppHandle) -> tauri::Result<TrayIcon> {
     let icon = Image::from_bytes(include_bytes!("../icons/tray.png"))?;

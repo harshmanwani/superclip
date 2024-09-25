@@ -5,6 +5,7 @@ import { getCurrentWindow } from '@tauri-apps/api/window';
 const appWindow = getCurrentWindow();
 
 import Settings from "./Settings";
+import { Auth0Provider } from '@auth0/auth0-react';
 
 function App() {
 
@@ -28,11 +29,19 @@ function App() {
   }, []);
 
   return (
-    <div className="container">
-      {
-        isSettingsWindow ? <Settings /> : <ClipboardViewer />
-      }
-    </div>
+    <Auth0Provider
+      domain="dev-vd0xcbf5cr3qnwhb.us.auth0.com"
+      clientId="zmJ0KKnHViwP59YqevliutRyjYKFA6MH"
+      authorizationParams={{
+        redirect_uri: window.location.origin
+      }}
+    >
+      <div className="container">
+        {
+          isSettingsWindow ? <Settings /> : <ClipboardViewer />
+        }
+      </div>
+    </Auth0Provider>
   );
 }
 
