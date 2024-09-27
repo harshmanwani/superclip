@@ -1,14 +1,69 @@
 import { useState, useEffect } from 'react';
 import { invoke } from '@tauri-apps/api/core';
 import { useAuth0 } from '@auth0/auth0-react';
-import "./settings.css"
 import AuthComponent from './Components/AuthComponent';
+import { listen } from '@tauri-apps/api/event';
+import "./settings.css"
 
 function Settings() {
   const { user, isAuthenticated, logout, getAccessTokenSilently } = useAuth0();
   const [error, setError] = useState('');
   const [trialDaysLeft, setTrialDaysLeft] = useState(0);
   const [isPro, setIsPro] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      storeUserData();
+      fetchUserData();
+    }
+  }, [isAuthenticated, user]);
+  
+  useEffect(() => {
+    const unlistenPanelOpen = listen('settings-window-shown', () => {
+      fetchUserData();
+      // scrollTop();
+    });
+
+    return () => {
+      unlistenPanelOpen.then(f => f());
+    };
+  }, []);
+
+  const storeUserData = async () => {
+    if (!user) return;
+    try {
+      await invoke('store_auth0_user_data', { 
+        userId: user.sub,
+        email: user.email, 
+        name: user.name, 
+        picture: user.picture,
+        isTrial: !isPro 
+      });
+    } catch (error) {
+      console.error('Failed to store user data:', error);
+      setError('Failed to store user data');
+    }
+  };
+
+  const fetchUserData = async () => {
+    if (!user) return;
+    try {
+      console.log("Fetching user data");
+      console.log(user);
+      const userData = await invoke('get_auth0_user_data', { userId: user.sub });
+      if (userData) {
+        setIsPro(!userData.is_trial);
+        if (userData.trial_end_date) {
+          const trialEnd = new Date(userData.trial_end_date);
+          const daysLeft = Math.max(0, Math.ceil((trialEnd.getTime() - Date.now()) / (1000 * 60 * 60 * 24)));
+          setTrialDaysLeft(daysLeft);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+      setError('Failed to fetch user data');
+    }
+  };
 
   const handleLogout = () => {
     logout({ logoutParams: { returnTo: window.location.origin } });
@@ -20,8 +75,9 @@ function Settings() {
 
   const handleUpgradeToPro = async () => {
     try {
-      await invoke('upgrade_to_pro');
+      // Implement your upgrade to Pro logic here
       setIsPro(true);
+      await storeUserData(); // Update user data after upgrading to Pro
     } catch (error) {
       console.error('Failed to upgrade to Pro:', error);
       setError('Failed to upgrade to Pro');

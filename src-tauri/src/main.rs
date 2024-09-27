@@ -12,7 +12,7 @@ mod backend {
     pub mod shared;
 }
 
-use backend::{clipboard_monitor::run_clipboard_monitor, database::DB_CONNECTION};
+use backend::{clipboard_monitor::run_clipboard_monitor, database::DB_CONNECTION, commands::{store_auth0_user_data, get_auth0_user_data}};
 use futures::executor::block_on; // Added this line to import the futures crate
 use once_cell::sync::Lazy; // Added this line to import Lazy
 
@@ -27,13 +27,13 @@ fn main() {
             command::init,
             command::show_menubar_panel,
             command::open_settings,
-            command::close_settings, // Add this line
-            command::check_auth_status,
-            command::handle_auth_callback,
-            command::logout,
+            command::close_settings,
+            command::close_panel,
             backend::commands::fetch_clipboard_history,
             backend::commands::clear_clipboard_history,
             backend::commands::mark_user_copy,
+            store_auth0_user_data,
+            get_auth0_user_data,
         ])
         .plugin(tauri_nspanel::init())
         .setup(|app| {

@@ -1,8 +1,9 @@
-use crate::backend::database::{get_clipboard_history, DB_CONNECTION};
+use crate::backend::database::{get_clipboard_history, DB_CONNECTION, store_user_data, get_user_data};
 use crate::backend::shared::SKIP_NEXT_SAVE;
 use chrono::{DateTime, Local};
 use serde::Serialize;
 use std::sync::atomic::Ordering;
+use chrono::{Utc, Duration};
 
 // Create a global instance of SharedState
 // static SHARED_STATE: Lazy<Arc<SharedState>> = Lazy::new(|| {
@@ -66,4 +67,30 @@ pub fn clear_clipboard_history() -> Result<(), String> {
 pub fn mark_user_copy() -> Result<(), String> {
     SKIP_NEXT_SAVE.store(true, Ordering::SeqCst);
     Ok(())
+}
+
+
+#[tauri::command]
+pub fn store_auth0_user_data(
+    user_id: String,
+    email: String,
+    name: String,
+    picture: String,
+    is_trial: bool,
+) -> Result<(), String> {
+    let conn = DB_CONNECTION.lock().unwrap();
+    let trial_end_date = if is_trial {
+        Some(Utc::now() + Duration::days(7))
+    } else {
+        None
+    };
+    
+    store_user_data(&conn, &user_id, &email, &name, &picture, is_trial, trial_end_date)
+        .map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub fn get_auth0_user_data(user_id: String) -> Result<Option<serde_json::Value>, String> {
+    let conn = DB_CONNECTION.lock().unwrap();
+    get_user_data(&conn, &user_id).map_err(|e| e.to_string())
 }
