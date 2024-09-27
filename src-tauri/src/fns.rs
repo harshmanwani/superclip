@@ -190,3 +190,7 @@ pub fn emit_panel_open(app: &AppHandle) {
 pub fn emit_clipboard_updated(app: &AppHandle) {
     app.emit("clipboard-updated", ()).unwrap();
 }
+
+pub fn emit_settings_window_open(app: &AppHandle) {
+    app.emit("settings-window-shown", true).unwrap();
+}
