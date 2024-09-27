@@ -1,7 +1,7 @@
 :root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 16px;
-  line-height: 24px;
+  line-height: 1.5;
   font-weight: 400;
 
   color: #111;
@@ -13,44 +13,37 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  --bg-color: #eaeaea; /* Softer, darker light background */
-  --text-color: #2c2c2e; /* Darker text color */
-  --text-secondary: #7a7a7a; /* Muted secondary text */
-  --card-bg: #ffffff; /* White card background */
-  --current-card-bg: #d1d1d1; /* Light current card background */
-  --divider-color: #ccc; /* Softer divider color */
-  --button-bg: #007bff; /* Blue button color */
-  --button-text: #ffffff; /* White button text */
-  --accent-color: #28a745; /* Green accent color */
-  --current-indicator-bg: #d1d1d1; /* Light current indicator */
-  --tooltip-bg: #ffffff; /* White tooltip background */
-  --tooltip-text: #333; /* Dark tooltip text */
-  --button-hover-bg: #0056b3; /* Darker blue on hover */
-  --quit-button-bg: #dc3545; /* Red quit button */
-  --confirm-button-bg: #28a745; /* Green confirm button */
-  --cancel-button-bg: #6c757d; /* Muted cancel button */
+  --bg-color: #f8f9fa;
+  --text-color: #212529;
+  --text-secondary: #6c757d;
+  --card-bg: #ffffff;
+  --current-card-bg: #e9ecef;
+  --divider-color: #dee2e6;
+  --button-bg: #007bff;
+  --button-text: #ffffff;
+  --accent-color: #0056b3;
+  --current-indicator-bg: #e9ecef;
+  --button-hover-bg: #0069d9;
+  --quit-button-bg: #dc3545;
+  --confirm-button-bg: #28a745;
+  --cancel-button-bg: #6c757d;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg-color: #2c2c2e; /* Softer dark background */
-    --text-color: #e5e5ea; /* Lighter text color */
-    --text-secondary: #d1d1d6; /* Muted secondary text */
-    --card-bg: #3a3a3c; /* Slightly lighter card background */
-    --current-card-bg: #4a4a4c; /* Lighter current card background */
-    --divider-color: #48484a; /* Softer divider color */
-    --button-bg: #007aff; /* Blue button color */
-    --button-text: #ffffff; /* White button text */
-    --accent-color: #34c759; /* Green accent color */
-    --current-indicator-bg: #4a4a4c; /* Lighter current indicator */
-    --tooltip-bg: #333333; /* Darker tooltip background */
-    --tooltip-text: #ffffff; /* White tooltip text */
-    --button-hover-bg: #0051a8; /* Darker blue on hover */
-    --quit-button-bg: #ff3b30; /* Red quit button */
-    --confirm-button-bg: #28a745; /* Green confirm button */
-    --cancel-button-bg: #8e8e93; /* Muted cancel button */
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    --bg-color: #212529;
+    --text-color: #f8f9fa;
+    --text-secondary: #adb5bd;
+    --card-bg: #343a40;
+    --current-card-bg: #495057;
+    --divider-color: #495057;
+    --button-bg: #0056b3;
+    --button-text: #ffffff;
+    --accent-color: #007bff;
+    --current-indicator-bg: #495057;
+    --button-hover-bg: #004494;
+    --quit-button-bg: #c82333;
+    --confirm-button-bg: #21
   }
 }
 
@@ -59,27 +52,22 @@ body {
   padding: 0;
   margin: 0;
   outline: 0;
-  overflow: auto;
+  overflow: hidden;
   box-sizing: border-box;
 }
 
 body {
   height: 100vh;
   width: 100vw;
-
-  /* border: 1px solid var(--bg-color); */
-  /* border-radius: 14px; */
-  overflow: hidden;
 }
 
 .container {
   margin: 0;
   background-color: var(--bg-color);
-  /* padding-top: 16px; */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   text-align: center;
-  overflow: auto;
+  overflow: hidden;
   height: 100vh;
 }

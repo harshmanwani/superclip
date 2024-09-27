@@ -1,12 +1,10 @@
 .clipboard-viewer {
-  font-family: 'Inter', sans-serif;
-  width: 92vw;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  width: 94%;
   height: 100vh;
   margin: 0 auto;
-  padding-top: 16px;
+  padding: 16px;
   background-color: var(--bg-color);
-  border-radius: 12px;
-  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -20,10 +18,11 @@
 }
 
 .header h2 {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
   color: var(--text-color);
   margin: 0;
+  opacity: 0.9;
 }
 
 .clipboard-content {
@@ -31,31 +30,29 @@
   overflow-y: auto;
   padding-right: 8px;
   scroll-behavior: smooth;
-  margin-bottom: 2rem;
-  padding-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .clear-button {
   background-color: var(--button-bg);
-  outline: none;
-  border: none;
   color: var(--button-text);
+  border: none;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 13px;
   padding: 8px 16px;
-  border-radius: 4px;
-  margin-top: 16px;
+  border-radius: 16px;
+  margin: 12px auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50%;
-  margin: auto;
-  margin-bottom: 1rem;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .clear-button:hover {
   background-color: var(--button-hover-bg);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
 .current-clipboard {
@@ -65,7 +62,7 @@
 .divider {
   position: relative;
   text-align: center;
-  margin: 24px 0 16px;
+  margin: 32px 0 24px;
 }
 
 .divider::before {
@@ -80,13 +77,14 @@
 .divider span {
   position: relative;
   background-color: var(--bg-color);
-  padding: 0 10px;
+  padding: 0 16px;
   color: var(--text-secondary);
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .clipboard-list {
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 /* Custom scrollbar styles */
@@ -95,12 +93,13 @@
 }
 
 .clipboard-content::-webkit-scrollbar-track {
-  background: var(--bg-color);
+  background: transparent;
 }
 
 .clipboard-content::-webkit-scrollbar-thumb {
   background-color: var(--text-secondary);
   border-radius: 3px;
+  opacity: 0.5;
 }
 
 .button-container {
