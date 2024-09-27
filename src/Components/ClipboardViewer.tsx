@@ -24,7 +24,7 @@ function ClipboardViewer() {
   const fetchHistory = async () => {
     try {
       const clipboardHistory = await invoke('fetch_clipboard_history');
-      setHistory((clipboardHistory as ClipboardEntry[]).filter((item, index) => 
+      setHistory((clipboardHistory as ClipboardEntry[]).filter((item, index) =>
         index === 0 ? item.content !== currentClipboard : true
       ));
     } catch (error) {
@@ -150,7 +150,10 @@ function ClipboardViewer() {
         </div>
       </div>
       <footer className="footer">
-        <button onClick={() => invoke('open_settings')} className="settings-button">
+        <button onClick={() => {
+          invoke('open_settings')
+          invoke('close_panel')
+        }} className="settings-button">
           <FaCog />&nbsp;Settings
         </button>
       </footer>
