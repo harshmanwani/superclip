@@ -1,4 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react';
+import "./AuthComponent.css";
 
 interface AuthComponentProps {
   setError: (error: string) => void;

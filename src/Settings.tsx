@@ -103,7 +103,7 @@ function Settings() {
                   <p className="trial-info">Trial expired</p>
                 )}
                 <button onClick={handleLogout} className="auth-button">
-                  Log Out
+                  Sign Out
                 </button>
               </div>
             ) : (
