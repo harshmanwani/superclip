@@ -16,16 +16,16 @@
       "icons/icon.ico"
     ]
   },
-  "productName": "ClipSync",
+  "productName": "SuperClip",
   "version": "0.2.0",
-  "identifier": "com.adeelabs.clipsync",
+  "identifier": "com.adeelabs.superclip",
   "plugins": {},
   "app": {
     "windows": [
       {
         "fullscreen": false,
         "resizable": false,
-        "title": "ClipSync",
+        "title": "SuperClip",
         "width": 350,
         "height": 500,
         "decorations": false,
