@@ -16,7 +16,7 @@ pub async fn run_clipboard_monitor(app_handle: &tauri::AppHandle) {
                 SKIP_NEXT_SAVE.store(false, Ordering::SeqCst);
             } else {
                 let conn = DB_CONNECTION.lock().unwrap();
-                save_clipboard_content(&conn, &current_content).unwrap();
+                save_clipboard_content(&conn, &current_content, None).unwrap();
                 emit_clipboard_updated(app_handle);
             }
             last_clipboard_content = current_content;

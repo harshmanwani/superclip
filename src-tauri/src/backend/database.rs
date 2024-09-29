@@ -34,29 +34,65 @@ fn initialize_database() -> rusqlite::Result<Connection> {
     let conn = Connection::open(db_path)?;
 
     conn.execute(
-        "CREATE TABLE IF NOT EXISTS clipboard (id INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT NOT NULL, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)",
+        "CREATE TABLE IF NOT EXISTS users (
+            user_id TEXT PRIMARY KEY,
+            auth0_id TEXT UNIQUE NOT NULL,
+            subscription_status TEXT NOT NULL,
+            trial_start TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            extra_data BLOB
+        )",
+        [],
+    )?;
+
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS clips (
+            clip_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id TEXT,
+            auth0_id TEXT,
+            clip_data TEXT NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            synced BOOLEAN DEFAULT FALSE,
+            extra_data BLOB,
+            FOREIGN KEY (user_id) REFERENCES users(user_id),
+            FOREIGN KEY (auth0_id) REFERENCES users(auth0_id)
+        )",
         [],
     )?;
 
     Ok(conn)
 }
 
-pub fn save_clipboard_content(conn: &Connection, content: &str) -> Result<()> {
+pub fn save_clipboard_content(conn: &Connection, content: &str, auth0_id: Option<&str>) -> Result<()> {
     let now = Utc::now();
     conn.execute(
-        "INSERT INTO clipboard (content, timestamp) VALUES (?1, ?2)",
-        &[content, &now.to_rfc3339()],
+        "INSERT INTO clips (clip_data, created_at, auth0_id)
+         VALUES (?1, ?2, ?3)",
+        &[content, &now.to_rfc3339(), auth0_id.unwrap_or("")],
     )?;
     Ok(())
 }
 
 pub fn get_clipboard_history(
     conn: &Connection,
+    auth0_id: Option<&str>,
     limit: usize,
 ) -> Result<Vec<(String, DateTime<Local>)>> {
-    let mut stmt =
-        conn.prepare("SELECT content, timestamp FROM clipboard ORDER BY timestamp DESC LIMIT ?")?;
-    let history_iter = stmt.query_map([limit as i64], |row| {
+    let query = if auth0_id.is_some() {
+        "SELECT clip_data, created_at FROM clips WHERE auth0_id = ? OR auth0_id IS NULL ORDER BY created_at DESC LIMIT ?"
+    } else {
+        "SELECT clip_data, created_at FROM clips WHERE auth0_id IS NULL ORDER BY created_at DESC LIMIT ?"
+    };
+
+    let mut stmt = conn.prepare(query)?;
+    let id_param = auth0_id.as_ref();
+    let params: &[&dyn rusqlite::ToSql] = match id_param {
+        Some(id) => &[id, &(limit as i64)],
+        None => &[&(limit as i64)],
+    };
+
+    let history_iter = stmt.query_map(params, |row| {
         let content: String = row.get(0)?;
         let timestamp: String = row.get(1)?;
 
@@ -75,58 +111,51 @@ pub fn get_clipboard_history(
 pub fn store_user_data(
     conn: &Connection,
     user_id: &str,
-    email: &str,
-    name: &str,
-    picture: &str,
-    is_trial: bool,
-    trial_end_date: Option<DateTime<Utc>>,
+    auth0_id: &str,
+    subscription_status: &str,
+    trial_start: Option<DateTime<Utc>>,
+    extra_data: Option<&[u8]>,
 ) -> Result<()> {
     conn.execute(
-        "CREATE TABLE IF NOT EXISTS user_data (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id TEXT NOT NULL UNIQUE,
-            email TEXT NOT NULL,
-            name TEXT NOT NULL,
-            picture TEXT,
-            is_trial BOOLEAN NOT NULL,
-            trial_end_date TEXT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )",
-        [],
-    )?;
-
-    conn.execute(
-        "INSERT OR REPLACE INTO user_data (user_id, email, name, picture, is_trial, trial_end_date)
-         VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
+        "INSERT OR REPLACE INTO users (user_id, auth0_id, subscription_status, trial_start, updated_at, extra_data)
+         VALUES (?1, ?2, ?3, ?4, CURRENT_TIMESTAMP, ?5)",
         (
             user_id,
-            email,
-            name,
-            picture,
-            is_trial,
-            trial_end_date.map(|d| d.to_rfc3339()),
+            auth0_id,
+            subscription_status,
+            trial_start.map(|d| d.to_rfc3339()),
+            extra_data,
         ),
     )?;
 
     Ok(())
 }
 
-pub fn get_user_data(conn: &Connection, user_id: &str) -> Result<Option<serde_json::Value>> {
+pub fn get_user_data(conn: &Connection, auth0_id: &str) -> Result<Option<serde_json::Value>> {
     let mut stmt = conn.prepare(
-        "SELECT user_id, email, name, picture, is_trial, trial_end_date
-         FROM user_data WHERE user_id = ?1",
+        "SELECT user_id, auth0_id, subscription_status, trial_start, created_at, updated_at, extra_data
+         FROM users WHERE auth0_id = ?1",
     )?;
 
-    let user = stmt.query_row([user_id], |row| {
+    let user = stmt.query_row([auth0_id], |row| {
         Ok(serde_json::json!({
             "user_id": row.get::<_, String>(0)?,
-            "email": row.get::<_, String>(1)?,
-            "name": row.get::<_, String>(2)?,
-            "picture": row.get::<_, String>(3)?,
-            "is_trial": row.get::<_, bool>(4)?,
-            "trial_end_date": row.get::<_, Option<String>>(5)?,
+            "auth0_id": row.get::<_, String>(1)?,
+            "subscription_status": row.get::<_, String>(2)?,
+            "trial_start": row.get::<_, Option<String>>(3)?,
+            "created_at": row.get::<_, String>(4)?,
+            "updated_at": row.get::<_, String>(5)?,
+            "extra_data": row.get::<_, Option<Vec<u8>>>(6)?,
         }))
     }).optional()?;
 
     Ok(user)
+}
+
+pub fn update_clips_with_auth0_id(conn: &Connection, auth0_id: &str) -> Result<()> {
+    conn.execute(
+        "UPDATE clips SET auth0_id = ?1 WHERE auth0_id IS NULL",
+        [auth0_id],
+    )?;
+    Ok(())
 }

@@ -34,10 +34,14 @@ function Settings() {
     try {
       await invoke('store_auth0_user_data', { 
         userId: user.sub,
-        email: user.email, 
-        name: user.name, 
-        picture: user.picture,
-        isTrial: !isPro 
+        auth0Id: user.sub,
+        subscriptionStatus: isPro ? 'pro' : 'trial',
+        trialStart: isPro ? null : new Date().toISOString(),
+        extraData: JSON.stringify({
+          email: user.email,
+          name: user.name,
+          picture: user.picture,
+        })
       });
     } catch (error) {
       console.error('Failed to store user data:', error);
@@ -50,11 +54,12 @@ function Settings() {
     try {
       console.log("Fetching user data");
       console.log(user);
-      const userData = await invoke('get_auth0_user_data', { userId: user.sub });
+      const userData = await invoke('get_auth0_user_data', { auth0Id: user.sub });
       if (userData) {
-        setIsPro(!userData.is_trial);
-        if (userData.trial_end_date) {
-          const trialEnd = new Date(userData.trial_end_date);
+        setIsPro(userData.subscription_status === 'pro');
+        if (userData.trial_start) {
+          const trialStart = new Date(userData.trial_start);
+          const trialEnd = new Date(trialStart.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days trial
           const daysLeft = Math.max(0, Math.ceil((trialEnd.getTime() - Date.now()) / (1000 * 60 * 60 * 24)));
           setTrialDaysLeft(daysLeft);
         }
