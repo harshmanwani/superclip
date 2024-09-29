@@ -177,10 +177,3 @@
   background-color: var(--settings-trial-color);
   color: var(--settings-text-color);
 }
-
-.auth-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-width: 250px;
-}
