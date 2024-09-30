@@ -48,7 +48,7 @@ fn initialize_database() -> rusqlite::Result<Connection> {
 
     conn.execute(
         "CREATE TABLE IF NOT EXISTS clips (
-            clip_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            clip_id TEXT PRIMARY KEY,
             user_id TEXT,
             auth0_id TEXT,
             clip_data TEXT NOT NULL,
@@ -61,15 +61,35 @@ fn initialize_database() -> rusqlite::Result<Connection> {
         [],
     )?;
 
+    // Check if a local user exists, if not, create one
+    let local_user_exists: bool = conn.query_row(
+        "SELECT EXISTS(SELECT 1 FROM users WHERE auth0_id = 'local')",
+        [],
+        |row| row.get(0),
+    )?;
+
+    if !local_user_exists {
+        create_local_user(&conn)?;
+    }
+
     Ok(conn)
 }
 
 pub fn save_clipboard_content(conn: &Connection, content: &str, auth0_id: Option<&str>) -> Result<()> {
+    println!("Saving clipboard content: {}", content);
     let now = Utc::now();
+    let clip_id = uuid::Uuid::new_v4().to_string();
+    
+    let user_id: String = if let Some(id) = auth0_id {
+        conn.query_row("SELECT user_id FROM users WHERE auth0_id = ?1", [id], |row| row.get(0))?
+    } else {
+        conn.query_row("SELECT user_id FROM users WHERE auth0_id = 'local'", [], |row| row.get(0))?
+    };
+
     conn.execute(
-        "INSERT INTO clips (clip_data, created_at, auth0_id)
-         VALUES (?1, ?2, ?3)",
-        &[content, &now.to_rfc3339(), auth0_id.unwrap_or("")],
+        "INSERT INTO clips (clip_id, clip_data, created_at, user_id, auth0_id)
+         VALUES (?1, ?2, ?3, ?4, ?5)",
+        &[&clip_id, content, &now.to_rfc3339(), &user_id, auth0_id.unwrap_or("local")],
     )?;
     Ok(())
 }
@@ -79,10 +99,10 @@ pub fn get_clipboard_history(
     auth0_id: Option<&str>,
     limit: usize,
 ) -> Result<Vec<(String, DateTime<Local>)>> {
-    let query = if auth0_id.is_some() {
-        "SELECT clip_data, created_at FROM clips WHERE auth0_id = ? OR auth0_id IS NULL ORDER BY created_at DESC LIMIT ?"
+    let query = if let Some(id) = auth0_id {
+        "SELECT clip_data, created_at FROM clips WHERE auth0_id = ? OR auth0_id = 'local' ORDER BY created_at DESC LIMIT ?"
     } else {
-        "SELECT clip_data, created_at FROM clips WHERE auth0_id IS NULL ORDER BY created_at DESC LIMIT ?"
+        "SELECT clip_data, created_at FROM clips WHERE auth0_id = 'local' ORDER BY created_at DESC LIMIT ?"
     };
 
     let mut stmt = conn.prepare(query)?;
@@ -158,4 +178,14 @@ pub fn update_clips_with_auth0_id(conn: &Connection, auth0_id: &str) -> Result<(
         [auth0_id],
     )?;
     Ok(())
+}
+
+pub fn create_local_user(conn: &Connection) -> Result<String> {
+    let local_user_id = uuid::Uuid::new_v4().to_string();
+    conn.execute(
+        "INSERT INTO users (user_id, auth0_id, subscription_status)
+         VALUES (?1, ?2, ?3)",
+        &[&local_user_id, "local", "trial"],
+    )?;
+    Ok(local_user_id)
 }
