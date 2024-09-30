@@ -45,7 +45,7 @@ pub fn clear_clipboard_history() -> Result<(), String> {
     const MAX_ATTEMPTS: usize = 5;
 
     while attempts < MAX_ATTEMPTS {
-        match conn.execute("DELETE FROM clipboard", []) {
+        match conn.execute("DELETE FROM clips", []) {
             Ok(_) => {
                 println!("Deleted all the entries from database");
                 return Ok(());
